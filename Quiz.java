@@ -24,6 +24,7 @@ public class Quiz implements Serializable {
     String answer2;
     String answer3;
 
+    static LinkedList<Quiz> testList = new LinkedList<>();
 
     public Quiz(String newQuestion, String newAnswer1, String newAnswer2, String newAnswer3) {
         this.question = newQuestion;
@@ -32,12 +33,8 @@ public class Quiz implements Serializable {
         this.answer3 = newAnswer3;
 
     }
-static LinkedList<Quiz> testList = new LinkedList();
-    //Ska också innehålla en metod som ska läsa in de serialiserade frågeobjekten från en fil.
-
-    public static void startGame() throws Exception{
-
-        
+    public static void storeQuestions() throws Exception{
+         
         Quiz q1 = new Quiz("Hur många landskap har Sverige?", "20 stycken.", "25 stycken.", "28 stycken.");
         Quiz q2 = new Quiz("Vilket av dessa flygbolag är tyskt?", "Lufthansa", "SAS", "WizzAir");
         Quiz q3 = new Quiz("Hur gammal var Einstein när han dog?", "56 år gammal.", "66 år gammal.", "76 år gammal.");
@@ -58,7 +55,10 @@ static LinkedList<Quiz> testList = new LinkedList();
 
         out.flush();
         out.close();
+    }
+    //Ska också innehålla en metod som ska läsa in de serialiserade frågeobjekten från en fil.
 
+    public static void questionsLoad() throws Exception{
         ObjectInputStream in = new ObjectInputStream(new FileInputStream("C:/Users/trong_5qwu0lf/OneDrive/Dokument/EC Javautvecklare/Javakurs/Advancera Java/finaltaskforadvancedjava/quiz/questions.txt"));
 
         Quiz a1 = (Quiz) in.readObject();
@@ -76,20 +76,21 @@ static LinkedList<Quiz> testList = new LinkedList();
         testList.add(a6);
 
         in.close();
+        
+    }
+    public static void startGame() throws Exception{
+
+        questionsLoad();
 
 
         Scanner input = new Scanner(System.in);
-        System.out.println(a1.question);
-        System.out.println("1. " + a1.answer1);
-        System.out.println("2. " + a1.answer2);
-        System.out.println("3. " + a1.answer3);
+        System.out.println(testList.get(0));
+        // System.out.println("1. " + a1.answer1);
+        // System.out.println("2. " + a1.answer2);
+        // System.out.println("3. " + a1.answer3);
         System.out.println("Skriv svaret här: ");
 
-
-
-
         int nr2 = input.nextInt();
-
 
         if (nr2 == 2) {
             System.out.println("Rätt svar");
@@ -100,31 +101,11 @@ static LinkedList<Quiz> testList = new LinkedList();
             System.out.println("Fel svar ");
 
         } 
-        //System.out.println(a7.question);
-        // System.out.println("1. " + a7.answer1);
-        // System.out.println("2. " + a7.answer2);
-        // System.out.println("3. " + a7.answer3);
-        // System.out.println("Skriv svaret här: ");
-
-
-
-
-        // int nr3 = input.nextInt();
-
-
-        // if (nr3 == 2) {
-        //     System.out.println("Rätt svar");
-
-
-        // } else {
-
-        //     System.out.println("Fel svar ");
-
-        // }
+        
 
     }
     public static void startMenu() throws IOException, Exception{
-
+        storeQuestions();
 
         System.out.println("-------------------------------------------");
         System.out.println("Tryck in en siffra för vad du vill göra");
@@ -149,10 +130,40 @@ static LinkedList<Quiz> testList = new LinkedList();
                 
                 break;
             case 3:
-                
             addQuestion();
 
-                Scanner sc = new Scanner(System.in);
+                break;
+            case 4:
+                // kod block
+                break;
+            case 5:
+                // kod block
+                break;
+            default:
+        }
+    }
+
+
+    public static void questionsFile() throws Exception{
+
+        questionsLoad();
+       // String questionList = "C:/Users/trong_5qwu0lf/OneDrive/Dokument/EC Javautvecklare/Javakurs/Advancera Java/finaltaskforadvancedjava/quiz/questions.txt";
+
+        LinkedList<Quiz> questions = testList;
+        questions
+                .forEach(System.out::println); 
+               
+    }
+
+    @Override
+    public String toString() {
+        return "Question= " + question  
+                ;
+    }
+    public static void addQuestion() throws Exception{
+        questionsLoad();
+        System.out.println("Lägg till fråga och svarsalternativ");
+        Scanner sc = new Scanner(System.in);
 
                 System.out.println("Skriv din fråga");
                 String question = sc.nextLine();
@@ -167,71 +178,9 @@ static LinkedList<Quiz> testList = new LinkedList();
                 String answer3 = sc.nextLine();
 
 
-                // ObjectInputStream in = new ObjectInputStream(new FileInputStream("C:/Users/trong_5qwu0lf/OneDrive/Dokument/EC Javautvecklare/Javakurs/Advancera Java/finaltaskforadvancedjava/quiz/questions.txt"));
-
-                // Quiz a1 = (Quiz) in.readObject();
-                // Quiz a2 = (Quiz) in.readObject();
-                // Quiz a3 = (Quiz) in.readObject();
-                // Quiz a4 = (Quiz) in.readObject();
-                // Quiz a5 = (Quiz) in.readObject();
-                // Quiz a6 = (Quiz) in.readObject();
-
-                // in.close();
-
-
-
                 testList.add(new Quiz(question, answer1,answer2, answer3));
 
-
-                System.out.println(testList);
-
-
-                break;
-            case 4:
-                // kod block
-                break;
-            case 5:
-                // kod block
-                break;
-            default:
-        }
-    }
-
-
-    public static void questionsFile() throws IOException, ClassNotFoundException{
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream("C:/Users/trong_5qwu0lf/OneDrive/Dokument/EC Javautvecklare/Javakurs/Advancera Java/finaltaskforadvancedjava/quiz/questions.txt"));
-
-        Quiz a1 = (Quiz) in.readObject();
-        Quiz a2 = (Quiz) in.readObject();
-        Quiz a3 = (Quiz) in.readObject();
-        Quiz a4 = (Quiz) in.readObject();
-        Quiz a5 = (Quiz) in.readObject();
-        Quiz a6 = (Quiz) in.readObject();
-        //Quiz a7 = (Quiz) in.readObject();
-        testList.add(a1);
-        testList.add(a2);
-        testList.add(a3);
-        testList.add(a4);
-        testList.add(a5);
-        testList.add(a6);
-
-        in.close();
-       // String questionList = "C:/Users/trong_5qwu0lf/OneDrive/Dokument/EC Javautvecklare/Javakurs/Advancera Java/finaltaskforadvancedjava/quiz/questions.txt";
-
-        LinkedList<Quiz> questions = testList;
-       /* questions
-                .forEach(System.out::println); */
-                System.out.println(Quiz.testList);
-    }
-
-    @Override
-    public String toString() {
-        return "Question= " + question  
-                ;
-    }
-    public static void addQuestion(){
-
-        System.out.println("Lägg till fråga och svarsalternativ");
+            System.out.println(testList);
     }
 
 
