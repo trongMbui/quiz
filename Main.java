@@ -5,7 +5,13 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        Quiz.startMenu();
+        // Quiz.storeQuestions();
+        // Quiz.questionsLoad();
+        Quiz quiz = new Quiz();
+        
+        quiz.serializeQuestions();
+
+        quiz.startMenu();
       
         
     

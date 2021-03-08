@@ -18,9 +18,6 @@ public class Player extends Person implements Serializable {
     }
 
 
-
-
-
     public static void createPlayer(String name, String eMail, int age, int score, int played_games){
         Player player = new Player(name,age, eMail,score, played_games);
         playerList.add(player);

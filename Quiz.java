@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -24,17 +25,33 @@ public class Quiz implements Serializable {
     String answer2;
     String answer3;
 
-    static LinkedList<Quiz> testList = new LinkedList<>();
+ LinkedList<Quiz> testList = new LinkedList<>();
+ Scanner input = new Scanner(System.in);
 
     public Quiz(String newQuestion, String newAnswer1, String newAnswer2, String newAnswer3) {
         this.question = newQuestion;
         this.answer1 = newAnswer1;
         this.answer2 = newAnswer2;
         this.answer3 = newAnswer3;
+    }
+
+    public Quiz(){
 
     }
-    public static void storeQuestions() throws Exception{
+    //Quiz quiz = new Quiz();
+    
+    // public void storeQuestions() throws Exception{
          
+        
+    // }
+    // //Ska också innehålla en metod som ska läsa in de serialiserade frågeobjekten från en fil.
+
+    // public void questionsLoad() throws Exception{
+        
+        
+    // }
+
+    public void serializeQuestions() throws Exception{
         Quiz q1 = new Quiz("Hur många landskap har Sverige?", "20 stycken.", "25 stycken.", "28 stycken.");
         Quiz q2 = new Quiz("Vilket av dessa flygbolag är tyskt?", "Lufthansa", "SAS", "WizzAir");
         Quiz q3 = new Quiz("Hur gammal var Einstein när han dog?", "56 år gammal.", "66 år gammal.", "76 år gammal.");
@@ -55,10 +72,7 @@ public class Quiz implements Serializable {
 
         out.flush();
         out.close();
-    }
-    //Ska också innehålla en metod som ska läsa in de serialiserade frågeobjekten från en fil.
 
-    public static void questionsLoad() throws Exception{
         ObjectInputStream in = new ObjectInputStream(new FileInputStream("C:/Users/trong_5qwu0lf/OneDrive/Dokument/EC Javautvecklare/Javakurs/Advancera Java/finaltaskforadvancedjava/quiz/questions.txt"));
 
         Quiz a1 = (Quiz) in.readObject();
@@ -76,14 +90,13 @@ public class Quiz implements Serializable {
         testList.add(a6);
 
         in.close();
-        
     }
-    public static void startGame() throws Exception{
+    public void startGame() throws Exception{
 
-        questionsLoad();
+        //questionsLoad();
 
 
-        Scanner input = new Scanner(System.in);
+        //Scanner input = new Scanner(System.in);
         System.out.println(testList.get(0));
         // System.out.println("1. " + a1.answer1);
         // System.out.println("2. " + a1.answer2);
@@ -104,8 +117,8 @@ public class Quiz implements Serializable {
         
 
     }
-    public static void startMenu() throws IOException, Exception{
-        storeQuestions();
+    public void startMenu() throws  Exception{
+        //storeQuestions();
 
         System.out.println("-------------------------------------------");
         System.out.println("Tryck in en siffra för vad du vill göra");
@@ -115,9 +128,11 @@ public class Quiz implements Serializable {
         System.out.println(" 3. Lägg till en fråga ");
         System.out.println(" 4. Ta bort en fråga ");
         System.out.println(" 5. Redigera en fråga ");
+        System.out.println(" 6. Avsluta programmet ");
+
         System.out.println("-------------------------------------------");
 
-        Scanner input = new Scanner(System.in);
+        // Scanner input = new Scanner(System.in);
         int nr = input.nextInt();
 
         switch (nr) {
@@ -127,41 +142,44 @@ public class Quiz implements Serializable {
                 break;
             case 2:
                 questionsFile();
-                
+                startMenu();
                 break;
             case 3:
             addQuestion();
-
+                startMenu();
                 break;
             case 4:
                 // kod block
+                removeQuestions();
+                startMenu();
                 break;
             case 5:
                 // kod block
+                manageQuestions();
+                startMenu();
                 break;
-            default:
+            case 6:
+            System.exit(0);
+            break;
         }
     }
 
 
-    public static void questionsFile() throws Exception{
+    public void questionsFile() {
 
-        questionsLoad();
+        //questionsLoad();
        // String questionList = "C:/Users/trong_5qwu0lf/OneDrive/Dokument/EC Javautvecklare/Javakurs/Advancera Java/finaltaskforadvancedjava/quiz/questions.txt";
 
         LinkedList<Quiz> questions = testList;
+        Collections.shuffle(questions);
         questions
                 .forEach(System.out::println); 
                
     }
 
-    @Override
-    public String toString() {
-        return "Question= " + question  
-                ;
-    }
-    public static void addQuestion() throws Exception{
-        questionsLoad();
+   
+    public void addQuestion() {
+        //questionsLoad();
         System.out.println("Lägg till fråga och svarsalternativ");
         Scanner sc = new Scanner(System.in);
 
@@ -183,8 +201,22 @@ public class Quiz implements Serializable {
             System.out.println(testList);
     }
 
+    public void removeQuestions(){
+        
+        testList.remove();
 
+    }
 
+    public void manageQuestions(){
+        testList.set(0,new Quiz("TESTING","testanwser1","testanswer2","testanswer3"));
+        System.out.println(testList);
+    }
+
+ @Override
+    public String toString() {
+        return "Question= " + question  
+                ;
+    }
 
 }
 
